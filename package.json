@@ -1,0 +1,36 @@
+{
+  "name": "topocell",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TopoCell — ელექტროლიზის ვირტუალური ლაბორატორია",
+  "author": "ალექსანდრე გაგანაშვილი (იდეის ავტორი)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:save": "vitest run --reporter=json --outputFile=experiments/audit/.tests.raw.json && node scripts/tests-summary.mjs",
+    "experiments": "tsx scripts/run-experiments.ts",
+    "audit": "tsx scripts/audit-compute.ts && tsx scripts/audit-report.ts",
+    "audit:report": "tsx scripts/audit-report.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/noto-sans-georgian": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

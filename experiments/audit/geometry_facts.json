@@ -1,0 +1,82 @@
+{
+  "app": "TopoCell",
+  "version": "1.0.0",
+  "generatedBy": "scripts/audit-compute.ts",
+  "savedAt": "2026-11-17T16:23:20.936Z",
+  "facts": {
+    "rings": {
+      "params_mm": {
+        "R": 25,
+        "w": 20,
+        "t": 1,
+        "n": 0
+      },
+      "cathode_area_cm2": 65.96052722321183,
+      "cathode_volume_cm3": 3.1409547032251472,
+      "pappus_volume_cm3": 3.141592653589793,
+      "mid_area_cm2": 31.415926535898194,
+      "flat_strip_area_cm2": 31.415926535897935,
+      "edge_stretch": 0.40000000000000524,
+      "mid_orientable": true,
+      "mid_boundary_components": 2,
+      "solid_genus": 1
+    },
+    "rings_conformal_anode": {
+      "connected_components": 2,
+      "genus_total": 2,
+      "closed": true,
+      "area_cm2": 131.92105444642746,
+      "volume_cm3": 6.281909406450375,
+      "dmin_mm": 9.999999999999998,
+      "gap": {
+        "mean": 0.010015875321474344,
+        "p10": 0.009999999999999998,
+        "p50": 0.009999999999999998,
+        "p90": 0.009999999999999998
+      }
+    },
+    "mobius": {
+      "params_mm": {
+        "R": 25,
+        "w": 20,
+        "t": 1,
+        "n": 1
+      },
+      "cathode_area_cm2": 66.42948811332356,
+      "cathode_volume_cm3": 3.1407942271424942,
+      "pappus_volume_cm3": 3.141592653589793,
+      "mid_area_cm2": 31.63455375283777,
+      "flat_strip_area_cm2": 31.415926535897935,
+      "edge_stretch": 0.02150015683098383,
+      "mid_orientable": false,
+      "mid_boundary_components": 1,
+      "solid_genus": 1
+    },
+    "mobius_conformal_anode": {
+      "connected_components": 1,
+      "genus_total": 1,
+      "closed": true,
+      "area_cm2": 133.19141301152447,
+      "volume_cm3": 6.281590484706953,
+      "dmin_mm": 10,
+      "gap": {
+        "mean": 0.010478171515219636,
+        "p10": 0.010365391313854335,
+        "p50": 0.0104927939840379,
+        "p90": 0.010542135646679055
+      }
+    },
+    "metal_resistance": {
+      "rho_ohm_m": 6.93e-8,
+      "formula": "ΔV_max ≈ I·ρ·L / (8·w·t): რგოლური ზოლი ერთი კონტაქტით, დენი თანაბრად იკრიბება სიგრძეზე",
+      "scaled_dims_mm": {
+        "R": 18.21143788267043,
+        "w": 14.569150306136343,
+        "t": 1
+      },
+      "cathode_mV": 0.3401755795215199,
+      "mobius_conformal_anode_one_piece_mV": 0.6803511590430398,
+      "ring_conformal_anode_two_pieces_mV": 0.17008778976075994
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "app": "TopoCell",
+  "version": "1.0.0",
+  "generatedBy": "scripts/audit-compute.ts",
+  "savedAt": "2026-11-17T16:23:27.326Z",
+  "file": "experiments/exp3_equal_material.json",
+  "checks": [
+    {
+      "id": "plates_pair",
+      "N": 64,
+      "maxRelDeviation": 0,
+      "worstKey": ""
+    },
+    {
+      "id": "mobius_conformal",
+      "N": 64,
+      "maxRelDeviation": 0,
+      "worstKey": ""
+    }
+  ]
+}

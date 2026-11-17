@@ -1,0 +1,863 @@
+/* TopoCell — ლაბორატორიული ინტერფეისი. ფერი დათმობილია მონაცემებისთვის; ქრომი ნეიტრალურია. */
+:root {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface-1: #1a1a19;
+  --surface-2: #222221;
+  --surface-3: #2a2a28;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --muted: #898781;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --series-plates: #3987e5;
+  --series-rings: #d95926;
+  --series-mobius: #199e70;
+  --series-klein: #c98500;
+  --comp-erev: #5c5b57;
+  --comp-etaa: #9085e9;
+  --comp-etac: #d55181;
+  --comp-ohm: #0ca30c;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --serious: #ec835a;
+  --critical: #e66767;
+  --illus: #b28bd9;
+  --anode: #c9a36b;
+  --cathode: #8d98a6;
+  --focus: #f0efec;
+  --btn-bg: #f0efec;
+  --btn-fg: #0b0b0b;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --surface-2: #f3f3f0;
+  --surface-3: #eaeae6;
+  --border: rgba(11, 11, 11, 0.1);
+  --border-strong: rgba(11, 11, 11, 0.24);
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --series-plates: #2a78d6;
+  --series-rings: #eb6834;
+  --series-mobius: #1baf7a;
+  --series-klein: #eda100;
+  --comp-erev: #b5b4ae;
+  --comp-etaa: #6250d6;
+  --comp-etac: #e87ba4;
+  --comp-ohm: #008300;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --serious: #ec835a;
+  --critical: #d03b3b;
+  --illus: #7b4fb0;
+  --anode: #a57f45;
+  --cathode: #6d7885;
+  --focus: #0b0b0b;
+  --btn-bg: #0b0b0b;
+  --btn-fg: #fcfcfb;
+  --shadow: 0 1px 2px rgba(11, 11, 11, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+body {
+  background: var(--page);
+  color: var(--text-primary);
+  font-family: 'Noto Sans Georgian Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+  text-wrap: balance;
+}
+p {
+  margin: 0;
+}
+.num {
+  font-variant-numeric: tabular-nums;
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* ---------- განლაგება ---------- */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-1);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.brand h1 {
+  font-size: 16px;
+  letter-spacing: 0.01em;
+}
+.brand span {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.header .spacer {
+  flex: 1;
+}
+.main {
+  display: grid;
+  grid-template-columns: 348px minmax(0, 1fr);
+  align-items: start;
+}
+.sidebar {
+  position: sticky;
+  top: 49px;
+  height: calc(100vh - 49px);
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 8px 10px 40px;
+  scrollbar-width: thin;
+}
+.center {
+  min-width: 0;
+  padding: 12px 14px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 980px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+/* ---------- ბარათები, ღილაკები ---------- */
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+.card-pad {
+  padding: 12px 14px;
+}
+.card h3 {
+  font-size: 13px;
+}
+.sub {
+  color: var(--muted);
+  font-size: 12px;
+}
+.btn {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  border-radius: 7px;
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: var(--surface-2);
+}
+.btn.primary {
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border-color: var(--btn-bg);
+  font-weight: 600;
+}
+.btn.primary:hover {
+  opacity: 0.88;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.btn.small {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.seg button {
+  border: none;
+  background: transparent;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+}
+.seg button:last-child {
+  border-right: none;
+}
+.seg button[aria-pressed='true'] {
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 600;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.grow {
+  flex: 1;
+}
+
+/* ---------- ბეჯები ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.tag::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.tag.law::before {
+  background: var(--good);
+}
+.tag.model::before {
+  background: var(--series-plates);
+}
+.tag.assume::before {
+  background: var(--warning);
+}
+.tag.illus {
+  border-style: dashed;
+}
+.tag.illus::before {
+  background: var(--illus);
+}
+.tag.solver::before {
+  background: var(--good);
+}
+.tag.rough::before {
+  background: var(--serious);
+}
+
+.notice {
+  border-radius: 8px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.notice .ico {
+  flex: none;
+  font-weight: 700;
+}
+.notice.err {
+  border-color: color-mix(in srgb, var(--critical) 60%, transparent);
+}
+.notice.err .ico {
+  color: var(--critical);
+}
+.notice.warn {
+  border-color: color-mix(in srgb, var(--warning) 50%, transparent);
+}
+.notice.warn .ico {
+  color: var(--warning);
+}
+.notice.info .ico {
+  color: var(--text-secondary);
+}
+.notice ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+/* ---------- პარამეტრების პანელი ---------- */
+.section {
+  border-bottom: 1px solid var(--border);
+}
+.section > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 9px 4px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.section > summary::-webkit-details-marker {
+  display: none;
+}
+.section > summary::before {
+  content: '▸';
+  color: var(--muted);
+  font-size: 11px;
+  width: 10px;
+}
+.section[open] > summary::before {
+  content: '▾';
+}
+.section .body {
+  padding: 2px 4px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 8px;
+  align-items: center;
+}
+.field label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  min-width: 0;
+}
+.field label small {
+  display: block;
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.25;
+}
+.input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.input input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 4px 6px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+.input .unit {
+  padding: 0 6px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.input:focus-within {
+  border-color: var(--focus);
+}
+.input.invalid {
+  border-color: var(--critical);
+}
+.field .err {
+  grid-column: 1 / -1;
+  color: var(--critical);
+  font-size: 11px;
+}
+select.sel {
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface-2);
+  padding: 4px 6px;
+  width: 100%;
+  min-width: 0;
+}
+.field.wide {
+  grid-template-columns: 1fr;
+  gap: 3px;
+}
+.hint {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.check {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+}
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--text-primary);
+}
+
+/* ---------- 3D ხედი ---------- */
+.stage {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+.stage.split {
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 1250px) {
+  .stage.split {
+    grid-template-columns: 1fr;
+  }
+}
+.viewport {
+  position: relative;
+  height: min(62vh, 640px);
+  min-height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+}
+.viewport canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.vp-top,
+.vp-bottom {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.vp-top {
+  top: 10px;
+}
+.vp-bottom {
+  bottom: 10px;
+  align-items: flex-end;
+}
+.vp-chip {
+  background: color-mix(in srgb, var(--surface-1) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 3px 8px;
+  font-size: 11.5px;
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+.vp-chip.title {
+  font-weight: 600;
+  font-size: 12.5px;
+}
+.vp-chip.illus {
+  border: 1px dashed var(--illus);
+}
+.vp-chip.real {
+  border-color: color-mix(in srgb, var(--good) 60%, transparent);
+}
+.vp-chip.bad {
+  border-color: var(--critical);
+}
+.dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+.legend-bar {
+  width: 150px;
+  height: 9px;
+  border-radius: 3px;
+  margin: 3px 0 1px;
+}
+.legend-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 10.5px;
+}
+.toolbar {
+  display: flex;
+  gap: 10px 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 8px 12px;
+}
+.toolbar .ctl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.toolbar .ctl input[type='range'] {
+  width: 90px;
+}
+.toolbar .divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border);
+}
+
+/* ---------- მაჩვენებლები ---------- */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 8px;
+}
+.kpi {
+  padding: 10px 12px;
+}
+.kpi .label {
+  color: var(--text-secondary);
+  font-size: 11.5px;
+}
+.kpi .value {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+.kpi .value small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.kpi .foot {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
+.kpi {
+  display: flex;
+  flex-direction: column;
+}
+.kpi .kpi-tag {
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+/* ---------- ჩანართები ---------- */
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs button {
+  border: none;
+  background: transparent;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tabs button[aria-selected='true'] {
+  color: var(--text-primary);
+  border-bottom-color: var(--text-primary);
+  font-weight: 600;
+}
+.panel {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ---------- ცხრილები ---------- */
+.table-wrap {
+  overflow-x: auto;
+}
+table.data {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+}
+table.data th,
+table.data td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+table.data th:first-child,
+table.data td:first-child {
+  text-align: left;
+  white-space: normal;
+}
+table.data thead th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--surface-1);
+}
+table.data td .delta {
+  display: block;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+table.data td .delta.good {
+  color: var(--good);
+}
+table.data td .delta.bad {
+  color: var(--critical);
+}
+table.data tr.hl td {
+  background: var(--surface-2);
+}
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: -1px;
+}
+
+/* ---------- გრაფიკები ---------- */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 12px;
+}
+@media (max-width: 560px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.chart {
+  padding: 12px 14px 10px;
+  min-width: 0;
+}
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-start;
+}
+.chart-head h4 {
+  font-size: 13px;
+}
+.chart-legend {
+  display: flex;
+  gap: 4px 14px;
+  flex-wrap: wrap;
+  margin: 6px 0 2px;
+  color: var(--text-secondary);
+  font-size: 11.5px;
+}
+.chart-legend .key {
+  display: inline-block;
+  width: 14px;
+  height: 0;
+  border-top: 2px solid;
+  margin-right: 6px;
+  vertical-align: 3px;
+}
+.chart-legend .key.box {
+  height: 10px;
+  width: 10px;
+  border: none;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+.chart svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+.chart svg text {
+  fill: var(--muted);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+.chart svg .axis-title {
+  fill: var(--text-secondary);
+  font-size: 11px;
+}
+.chart-wrap {
+  position: relative;
+}
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-size: 11.5px;
+  z-index: 5;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+.tooltip .t-head {
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+.tooltip .t-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+.chart-note {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+/* ---------- მეთოდოლოგია ---------- */
+.prose {
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.prose h3 {
+  font-size: 15px;
+  margin-top: 10px;
+}
+.prose h4 {
+  font-size: 13px;
+  margin-top: 4px;
+}
+.prose ul,
+.prose ol {
+  margin: 0;
+  padding-left: 20px;
+}
+.prose li {
+  margin: 2px 0;
+}
+.prose code,
+.formula {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 12px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.formula {
+  display: block;
+  padding: 7px 10px;
+  overflow-x: auto;
+  white-space: pre;
+}
+.prose a {
+  color: var(--text-primary);
+}
+.status-pass {
+  color: var(--good);
+  font-weight: 600;
+}
+.status-fail {
+  color: var(--critical);
+  font-weight: 600;
+}
+.progress {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+.progress > div {
+  height: 100%;
+  background: var(--text-primary);
+  transition: width 0.15s;
+}
+.heat {
+  display: grid;
+  gap: 2px;
+}
+.heat .cell {
+  min-height: 34px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.heat .cell.bad {
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px dashed var(--border-strong);
+}
+.heat .axis-lab {
+  color: var(--muted);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
