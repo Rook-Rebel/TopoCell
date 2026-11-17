@@ -392,7 +392,7 @@ export function Viewport(p: {
     disposeGroup(ctx.gBubbles);
     ctx.bubbles = [];
     ctx.mats = [];
-    ctx.scene.background = new THREE.Color(cssVar('--surface-1') || '#1a1a19');
+    ctx.scene.background = new THREE.Color(cssVar('--stage') || cssVar('--surface-1') || '#1a1a19');
     const dark = p.theme !== 'light';
     setLegend(null);
     if (!cell) {

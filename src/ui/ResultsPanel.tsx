@@ -8,7 +8,7 @@ function Kpi(p: { label: string; value: string; unit?: string; foot?: React.Reac
   return (
     <div className="card kpi">
       <div className="label">{p.label}</div>
-      <div className="value num">
+      <div className={'value num' + (p.value.length > 9 ? ' long' : '')}>
         {p.value}
         {p.unit && <small>{p.unit}</small>}
       </div>
@@ -40,8 +40,15 @@ export function KpiStrip({ lab }: { lab: Lab }) {
   }
   const b = e.b,
     p = e.prod;
+  const el = lab.cfg.electrical;
+  const fixed = el.mode === 'I' ? `დენი I = ${fmt(el.I, 2)} A` : el.mode === 'U' ? `ძაბვა U = ${fmt(el.U, 3)} V` : `სიმძლავრე P = ${fmt(el.P, 2)} W`;
   return (
     <>
+      <div className="kpi-head">
+        <i className="swatch" style={{ background: SERIES_VAR[kind] }} />
+        <h2>{KIND_LABEL[kind]}</h2>
+        <span className="sub">სამუშაო წერტილი · ფიქსირებულია {fixed}</span>
+      </div>
       <div className="kpis">
         <Kpi label="H₂ მოლური ნაკადი" value={fmt(p.nH2 * 3.6e6, 2)} unit="mmol/h" foot={`${fmt(p.mH2 * 3.6e9, 2)} მგ/სთ · O₂: ${fmt(p.nO2 * 3.6e6, 2)} mmol/h`} tag={<Tag kind="law" />} />
         <Kpi label="H₂ მოცულობითი ნაკადი" value={fmt(p.vH2op * 3.6e6, 3)} unit="L/h" foot={`სამუშაო პირობებში: ${cond} · ${fmt(p.vH2n * 3.6e6, 3)} Nl/h (0 °C, 1.01325 bar)`} tag={<Tag kind="law" />} />
@@ -205,7 +212,7 @@ export function ComparePanel({ lab }: { lab: Lab }) {
                 <th key={k}>
                   <i className="swatch" style={{ background: SERIES_VAR[k] }} />
                   {KIND_SHORT[k]}
-                  {k === ref ? ' (საბაზისო)' : ''}
+                  {k === ref && <small className="th-note">საბაზისო</small>}
                 </th>
               ))}
             </tr>
